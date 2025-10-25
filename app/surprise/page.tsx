@@ -14,10 +14,6 @@ export default function SurprisePage() {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    generateSurpriseRecommendations();
-  }, []);
-
   const generateSurpriseRecommendations = async () => {
     try {
       // Create default preferences for surprise mode
@@ -101,6 +97,10 @@ export default function SurprisePage() {
       console.error('Error fetching movie data:', error);
     }
   };
+
+  useEffect(() => {
+    generateSurpriseRecommendations();
+  }, []);
 
   if (isLoading) {
     return (

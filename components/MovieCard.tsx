@@ -118,7 +118,7 @@ export default function MovieCard({ movie, onAddToHistory, showAddButton = true 
             {showReasoning && (
               <div className="mt-4 p-6 bg-dark-700/50 rounded-2xl border border-dark-600/50">
                 <p className="text-sm text-dark-200 italic leading-relaxed">
-                  "{movie.reasoning}"
+                  &ldquo;{movie.reasoning}&rdquo;
                 </p>
               </div>
             )}

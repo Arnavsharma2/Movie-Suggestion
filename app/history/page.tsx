@@ -121,7 +121,7 @@ export default function HistoryPage() {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">No Movies in Your History</h2>
             <p className="text-gray-600 mb-8">
-              Start building your watch history by adding movies you've watched or getting recommendations.
+              Start building your watch history by adding movies you&apos;ve watched or getting recommendations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button

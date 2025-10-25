@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -6,7 +6,11 @@ export const metadata: Metadata = {
   description: 'Discover your next favorite movie with personalized recommendations powered by Google Gemini AI. Answer a few questions and get curated suggestions that match your taste perfectly.',
   keywords: 'movie recommendations, AI, personalized suggestions, cinema, films, entertainment',
   authors: [{ name: 'CineMatch Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
