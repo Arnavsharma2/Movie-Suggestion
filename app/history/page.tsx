@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Star, Edit, Trash2, Plus, Calendar, Filter, Globe } from 'lucide-react';
+import { ArrowLeft, Star, Edit, Trash2, Plus, Calendar, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { WatchedMovie } from '@/types';
 import { localStorage } from '@/lib/localStorage';
@@ -17,7 +17,6 @@ export default function HistoryPage() {
     rating: 0,
     cinemaRegion: ''
   });
-  const [filterRegion, setFilterRegion] = useState<string>('all');
 
   const cinemaRegions = [
     'Hollywood (American)',
@@ -122,13 +121,6 @@ export default function HistoryPage() {
     });
   };
 
-  const getFilteredMovies = () => {
-    if (filterRegion === 'all') {
-      return watchHistory;
-    }
-    return watchHistory.filter(movie => movie.cinemaRegion === filterRegion);
-  };
-
   const getUniqueRegions = () => {
     const regions = watchHistory
       .map(movie => movie.cinemaRegion)
@@ -147,28 +139,13 @@ export default function HistoryPage() {
               <span>Back to Home</span>
             </Link>
             <h1 className="text-xl font-bold text-dark-50">Watch History</h1>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Filter className="w-4 h-4 text-dark-300" />
-                <select
-                  value={filterRegion}
-                  onChange={(e) => setFilterRegion(e.target.value)}
-                  className="bg-dark-700 border border-dark-600 rounded-lg px-3 py-2 text-dark-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="all">All Regions</option>
-                  {getUniqueRegions().map(region => (
-                    <option key={region} value={region}>{region}</option>
-                  ))}
-                </select>
-              </div>
-              <button
-                onClick={() => setShowAddForm(true)}
-                className="btn-primary flex items-center"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Movie
-              </button>
-            </div>
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="btn-primary flex items-center"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Movie
+            </button>
           </div>
         </div>
       </div>
@@ -203,16 +180,14 @@ export default function HistoryPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {getFilteredMovies().length}
+                  {watchHistory.length}
                 </div>
-                <div className="text-dark-300">
-                  {filterRegion === 'all' ? 'Movies Watched' : `${filterRegion} Movies`}
-                </div>
+                <div className="text-dark-300">Movies Watched</div>
               </div>
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {getFilteredMovies().length > 0 
-                    ? (getFilteredMovies().reduce((sum, movie) => sum + movie.rating, 0) / getFilteredMovies().length).toFixed(1)
+                  {watchHistory.length > 0 
+                    ? (watchHistory.reduce((sum, movie) => sum + movie.rating, 0) / watchHistory.length).toFixed(1)
                     : '0.0'
                   }
                 </div>
@@ -220,7 +195,7 @@ export default function HistoryPage() {
               </div>
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {getFilteredMovies().filter(movie => movie.rating >= 8).length}
+                  {watchHistory.filter(movie => movie.rating >= 8).length}
                 </div>
                 <div className="text-dark-300">Highly Rated (8+)</div>
               </div>
@@ -234,7 +209,7 @@ export default function HistoryPage() {
 
             {/* Movie List */}
             <div className="space-y-6">
-              {getFilteredMovies()
+              {watchHistory
                 .sort((a, b) => new Date(b.watchedDate).getTime() - new Date(a.watchedDate).getTime())
                 .map((movie) => (
                 <div key={movie.id} className="card">
