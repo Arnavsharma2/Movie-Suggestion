@@ -93,14 +93,14 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200">
+      <div className="bg-dark-800/50 backdrop-blur-sm border-b border-dark-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+            <Link href="/" className="flex items-center space-x-2 text-dark-300 hover:text-dark-100">
               <ArrowLeft className="h-5 w-5" />
               <span>Back to Home</span>
             </Link>
-            <h1 className="text-xl font-bold text-gray-900">Watch History</h1>
+            <h1 className="text-xl font-bold text-dark-50">Watch History</h1>
             <button
               onClick={() => setShowAddForm(true)}
               className="btn-primary flex items-center"
@@ -116,11 +116,11 @@ export default function HistoryPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {watchHistory.length === 0 ? (
           <div className="text-center py-20">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Calendar className="w-12 h-12 text-gray-400" />
+            <div className="w-24 h-24 bg-dark-700/50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Calendar className="w-12 h-12 text-dark-400" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">No Movies in Your History</h2>
-            <p className="text-gray-600 mb-8">
+            <h2 className="text-2xl font-bold text-dark-50 mb-4">No Movies in Your History</h2>
+            <p className="text-dark-300 mb-8">
               Start building your watch history by adding movies you&apos;ve watched or getting recommendations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -144,7 +144,7 @@ export default function HistoryPage() {
                 <div className="text-3xl font-bold text-primary-600 mb-2">
                   {watchHistory.length}
                 </div>
-                <div className="text-gray-600">Movies Watched</div>
+                <div className="text-dark-300">Movies Watched</div>
               </div>
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
@@ -153,13 +153,13 @@ export default function HistoryPage() {
                     : '0.0'
                   }
                 </div>
-                <div className="text-gray-600">Average Rating</div>
+                <div className="text-dark-300">Average Rating</div>
               </div>
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
                   {watchHistory.filter(movie => movie.rating >= 8).length}
                 </div>
-                <div className="text-gray-600">Highly Rated (8+)</div>
+                <div className="text-dark-300">Highly Rated (8+)</div>
               </div>
             </div>
 
@@ -191,11 +191,11 @@ export default function HistoryPage() {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          <h3 className="text-2xl font-bold text-dark-50 mb-2">
                             {movie.title}
-                            <span className="text-lg font-normal text-gray-600 ml-2">({movie.year})</span>
+                            <span className="text-lg font-normal text-dark-300 ml-2">({movie.year})</span>
                           </h3>
-                          <div className="flex items-center text-gray-600 mb-4">
+                          <div className="flex items-center text-dark-300 mb-4">
                             <Calendar className="w-4 h-4 mr-2" />
                             <span>Watched on {formatDate(movie.watchedDate)}</span>
                           </div>
@@ -205,13 +205,13 @@ export default function HistoryPage() {
                         <div className="flex space-x-2">
                           <button
                             onClick={() => handleEditMovie(movie)}
-                            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                            className="p-2 text-dark-300 hover:text-dark-100 hover:bg-dark-700/50 rounded-lg transition-colors"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteMovie(movie.id)}
-                            className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -221,7 +221,7 @@ export default function HistoryPage() {
                       {/* Rating */}
                       <div className="mb-4">
                         <div className="flex items-center space-x-2 mb-2">
-                          <span className="text-sm font-medium text-gray-700">Your Rating:</span>
+                          <span className="text-sm font-medium text-dark-200">Your Rating:</span>
                           <div className="flex">
                             {getRatingStars(movie.rating)}
                           </div>
@@ -252,11 +252,11 @@ export default function HistoryPage() {
         {/* Add Movie Modal */}
         {showAddForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Add Movie to History</h3>
+            <div className="bg-dark-800 rounded-xl p-6 w-full max-w-md border border-dark-700">
+              <h3 className="text-xl font-bold text-dark-50 mb-4">Add Movie to History</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
                     Movie Title
                   </label>
                   <input
@@ -268,7 +268,7 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
                     Year
                   </label>
                   <input
@@ -281,7 +281,7 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
                     Your Rating (1-10)
                   </label>
                   <input
@@ -315,11 +315,11 @@ export default function HistoryPage() {
         {/* Edit Movie Modal */}
         {editingMovie && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Edit Movie</h3>
+            <div className="bg-dark-800 rounded-xl p-6 w-full max-w-md border border-dark-700">
+              <h3 className="text-xl font-bold text-dark-50 mb-4">Edit Movie</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
                     Movie Title
                   </label>
                   <input
@@ -330,7 +330,7 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
                     Year
                   </label>
                   <input
@@ -343,7 +343,7 @@ export default function HistoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
                     Your Rating (1-10)
                   </label>
                   <input
