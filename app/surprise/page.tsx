@@ -24,7 +24,8 @@ export default function SurprisePage() {
         contentLevel: 'Any content level is fine',
         watchTime: 'Length doesn\'t matter',
         ratingPreference: 'Open to hidden gems (6+ stars)',
-        scorePreference: 'Balanced approach'
+        scorePreference: 'Balanced approach',
+        cinemaRegion: ['I enjoy movies from all regions'] // Open to all cinema regions for surprises
       };
 
       // Get any existing watch history
