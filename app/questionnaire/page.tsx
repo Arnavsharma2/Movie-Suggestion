@@ -106,6 +106,41 @@ const questionnaireSteps: QuestionnaireStep[] = [
       'I don\'t pay attention to scores'
     ],
     required: true
+  },
+  {
+    id: 'cinemaRegion',
+    title: 'What cinema regions interest you?',
+    question: 'Select the movie industries you enjoy (choose multiple):',
+    type: 'multiple',
+    options: [
+      'Hollywood (American)',
+      'Bollywood (Indian Hindi)',
+      'Tollywood (Indian Telugu)',
+      'Kollywood (Indian Tamil)',
+      'Mollywood (Indian Malayalam)',
+      'British Cinema',
+      'French Cinema',
+      'German Cinema',
+      'Italian Cinema',
+      'Spanish Cinema',
+      'Korean Cinema',
+      'Japanese Cinema',
+      'Chinese Cinema',
+      'Hong Kong Cinema',
+      'Australian Cinema',
+      'Canadian Cinema',
+      'Brazilian Cinema',
+      'Mexican Cinema',
+      'Nigerian Cinema (Nollywood)',
+      'Turkish Cinema',
+      'Russian Cinema',
+      'Scandinavian Cinema',
+      'Eastern European Cinema',
+      'Middle Eastern Cinema',
+      'Southeast Asian Cinema',
+      'I enjoy movies from all regions'
+    ],
+    required: true
   }
 ];
 
@@ -152,7 +187,8 @@ function QuestionnaireContent() {
         contentLevel: preferences.contentLevel as string || '',
         watchTime: preferences.watchTime as string || '',
         ratingPreference: preferences.ratingPreference as string || '',
-        scorePreference: preferences.scorePreference as string || ''
+        scorePreference: preferences.scorePreference as string || '',
+        cinemaRegion: preferences.cinemaRegion as string[] || []
       };
 
       localStorage.setPreferences(fullPreferences);

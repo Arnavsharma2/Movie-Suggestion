@@ -6,6 +6,7 @@ export interface UserPreferences {
   watchTime: string;
   ratingPreference: string;
   scorePreference: string;
+  cinemaRegion: string[];
 }
 
 export interface WatchedMovie {
@@ -15,6 +16,7 @@ export interface WatchedMovie {
   rating: number;
   watchedDate: string;
   poster?: string;
+  cinemaRegion?: string;
 }
 
 export interface Recommendation {

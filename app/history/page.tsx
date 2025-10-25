@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Star, Edit, Trash2, Plus, Calendar } from 'lucide-react';
+import { ArrowLeft, Star, Edit, Trash2, Plus, Calendar, Filter, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { WatchedMovie } from '@/types';
 import { localStorage } from '@/lib/localStorage';
@@ -14,8 +14,39 @@ export default function HistoryPage() {
   const [newMovie, setNewMovie] = useState({
     title: '',
     year: new Date().getFullYear(),
-    rating: 0
+    rating: 0,
+    cinemaRegion: ''
   });
+  const [filterRegion, setFilterRegion] = useState<string>('all');
+
+  const cinemaRegions = [
+    'Hollywood (American)',
+    'Bollywood (Indian Hindi)',
+    'Tollywood (Indian Telugu)',
+    'Kollywood (Indian Tamil)',
+    'Mollywood (Indian Malayalam)',
+    'British Cinema',
+    'French Cinema',
+    'German Cinema',
+    'Italian Cinema',
+    'Spanish Cinema',
+    'Korean Cinema',
+    'Japanese Cinema',
+    'Chinese Cinema',
+    'Hong Kong Cinema',
+    'Australian Cinema',
+    'Canadian Cinema',
+    'Brazilian Cinema',
+    'Mexican Cinema',
+    'Nigerian Cinema (Nollywood)',
+    'Turkish Cinema',
+    'Russian Cinema',
+    'Scandinavian Cinema',
+    'Eastern European Cinema',
+    'Middle Eastern Cinema',
+    'Southeast Asian Cinema',
+    'Other/Unknown'
+  ];
 
   useEffect(() => {
     const history = localStorage.getWatchHistory();
@@ -45,12 +76,13 @@ export default function HistoryPage() {
         title: newMovie.title.trim(),
         year: newMovie.year,
         rating: newMovie.rating,
-        watchedDate: new Date().toISOString()
+        watchedDate: new Date().toISOString(),
+        cinemaRegion: newMovie.cinemaRegion || undefined
       };
 
       localStorage.addToWatchHistory(movie);
       setWatchHistory(prev => [...prev, movie]);
-      setNewMovie({ title: '', year: new Date().getFullYear(), rating: 0 });
+      setNewMovie({ title: '', year: new Date().getFullYear(), rating: 0, cinemaRegion: '' });
       setShowAddForm(false);
     }
   };
@@ -90,6 +122,20 @@ export default function HistoryPage() {
     });
   };
 
+  const getFilteredMovies = () => {
+    if (filterRegion === 'all') {
+      return watchHistory;
+    }
+    return watchHistory.filter(movie => movie.cinemaRegion === filterRegion);
+  };
+
+  const getUniqueRegions = () => {
+    const regions = watchHistory
+      .map(movie => movie.cinemaRegion)
+      .filter((region): region is string => region !== undefined && region !== '');
+    return Array.from(new Set(regions));
+  };
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -101,13 +147,28 @@ export default function HistoryPage() {
               <span>Back to Home</span>
             </Link>
             <h1 className="text-xl font-bold text-dark-50">Watch History</h1>
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="btn-primary flex items-center"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Movie
-            </button>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <Filter className="w-4 h-4 text-dark-300" />
+                <select
+                  value={filterRegion}
+                  onChange={(e) => setFilterRegion(e.target.value)}
+                  className="bg-dark-700 border border-dark-600 rounded-lg px-3 py-2 text-dark-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  <option value="all">All Regions</option>
+                  {getUniqueRegions().map(region => (
+                    <option key={region} value={region}>{region}</option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="btn-primary flex items-center"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Movie
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -139,17 +200,19 @@ export default function HistoryPage() {
         ) : (
           <>
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {watchHistory.length}
+                  {getFilteredMovies().length}
                 </div>
-                <div className="text-dark-300">Movies Watched</div>
+                <div className="text-dark-300">
+                  {filterRegion === 'all' ? 'Movies Watched' : `${filterRegion} Movies`}
+                </div>
               </div>
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {watchHistory.length > 0 
-                    ? (watchHistory.reduce((sum, movie) => sum + movie.rating, 0) / watchHistory.length).toFixed(1)
+                  {getFilteredMovies().length > 0 
+                    ? (getFilteredMovies().reduce((sum, movie) => sum + movie.rating, 0) / getFilteredMovies().length).toFixed(1)
                     : '0.0'
                   }
                 </div>
@@ -157,15 +220,21 @@ export default function HistoryPage() {
               </div>
               <div className="card text-center">
                 <div className="text-3xl font-bold text-primary-600 mb-2">
-                  {watchHistory.filter(movie => movie.rating >= 8).length}
+                  {getFilteredMovies().filter(movie => movie.rating >= 8).length}
                 </div>
                 <div className="text-dark-300">Highly Rated (8+)</div>
+              </div>
+              <div className="card text-center">
+                <div className="text-3xl font-bold text-primary-600 mb-2">
+                  {getUniqueRegions().length}
+                </div>
+                <div className="text-dark-300">Cinema Regions</div>
               </div>
             </div>
 
             {/* Movie List */}
             <div className="space-y-6">
-              {watchHistory
+              {getFilteredMovies()
                 .sort((a, b) => new Date(b.watchedDate).getTime() - new Date(a.watchedDate).getTime())
                 .map((movie) => (
                 <div key={movie.id} className="card">
@@ -195,10 +264,18 @@ export default function HistoryPage() {
                             {movie.title}
                             <span className="text-lg font-normal text-dark-300 ml-2">({movie.year})</span>
                           </h3>
-                          <div className="flex items-center text-dark-300 mb-4">
+                          <div className="flex items-center text-dark-300 mb-2">
                             <Calendar className="w-4 h-4 mr-2" />
                             <span>Watched on {formatDate(movie.watchedDate)}</span>
                           </div>
+                          {movie.cinemaRegion && (
+                            <div className="flex items-center text-dark-300 mb-4">
+                              <Globe className="w-4 h-4 mr-2" />
+                              <span className="bg-dark-700 px-2 py-1 rounded-full text-xs">
+                                {movie.cinemaRegion}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Actions */}
@@ -293,6 +370,21 @@ export default function HistoryPage() {
                     max="10"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                    Cinema Region (Optional)
+                  </label>
+                  <select
+                    value={newMovie.cinemaRegion}
+                    onChange={(e) => setNewMovie(prev => ({ ...prev, cinemaRegion: e.target.value }))}
+                    className="input-field"
+                  >
+                    <option value="">Select region...</option>
+                    {cinemaRegions.map(region => (
+                      <option key={region} value={region}>{region}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className="flex justify-end space-x-3 mt-6">
                 <button
@@ -354,6 +446,21 @@ export default function HistoryPage() {
                     min="1"
                     max="10"
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                    Cinema Region (Optional)
+                  </label>
+                  <select
+                    value={editingMovie.cinemaRegion || ''}
+                    onChange={(e) => setEditingMovie(prev => prev ? { ...prev, cinemaRegion: e.target.value || undefined } : null)}
+                    className="input-field"
+                  >
+                    <option value="">Select region...</option>
+                    {cinemaRegions.map(region => (
+                      <option key={region} value={region}>{region}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex justify-end space-x-3 mt-6">

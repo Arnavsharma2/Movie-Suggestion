@@ -47,8 +47,8 @@ const buildPrompt = (
   surpriseMe: boolean
 ): string => {
   const watchHistoryText = watchHistory.length > 0 
-    ? `\n\nWatch History (with ratings):\n${watchHistory.map(movie => 
-        `- ${movie.title} (${movie.year}) - Rating: ${movie.rating}/10`
+    ? `\n\nWatch History (with ratings and cinema regions):\n${watchHistory.map(movie => 
+        `- ${movie.title} (${movie.year}) - Rating: ${movie.rating}/10${movie.cinemaRegion ? ` - Region: ${movie.cinemaRegion}` : ''}`
       ).join('\n')}`
     : '\n\nNo watch history available.';
 
@@ -65,7 +65,8 @@ User Preferences:
 - Content Level: ${preferences.contentLevel}
 - Watch Time: ${preferences.watchTime}
 - Rating Preference: ${preferences.ratingPreference}
-- Score Preference: ${preferences.scorePreference}${watchHistoryText}${surpriseMeText}
+- Score Preference: ${preferences.scorePreference}
+- Cinema Regions: ${preferences.cinemaRegion.join(', ')}${watchHistoryText}${surpriseMeText}
 
 Please respond with a JSON object in this exact format:
 {
@@ -84,10 +85,12 @@ Guidelines:
 - Include a mix of well-known and hidden gems
 - Consider the user's rating preferences (highly-rated vs hidden gems)
 - Balance their genre preferences with their mood and content preferences
-- If they have watch history, consider patterns in their ratings
+- Respect their cinema region preferences - prioritize movies from their selected regions
+- If they have watch history, consider patterns in their ratings and cinema region preferences
 - For surprise recommendations, suggest movies that are excellent but might not perfectly match their stated preferences
 - Ensure all movies are real and available
 - Provide diverse recommendations within their preferences
+- Include movies from different cinema regions they've expressed interest in
 - Make reasoning specific and helpful
 
 Return only the JSON object, no additional text.`;
